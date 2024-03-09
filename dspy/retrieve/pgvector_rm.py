@@ -64,6 +64,7 @@ class PgVectorRM(dspy.Retrieve):
             k: Optional[int]=20,
             embedding_field: str = "embedding",
             fields: List[str] = ['text'],
+            model: str = "text-embedding-ada-002",
     ):
         """
         k = 20 is the number of paragraphs to retrieve
@@ -75,6 +76,7 @@ class PgVectorRM(dspy.Retrieve):
         self.pg_table_name = pg_table_name
         self.fields = fields
         self.embedding_field = embedding_field
+        self.model = model
 
         super().__init__(k=k)
 
@@ -89,7 +91,7 @@ class PgVectorRM(dspy.Retrieve):
         """
         # Embed query
         query_embedding = self.openai_client.embeddings.create(
-            model="text-embedding-ada-002",
+            model=self.model,
             input=query,
             encoding_format="float",
         ).data[0].embedding

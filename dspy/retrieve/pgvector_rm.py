@@ -112,7 +112,9 @@ class PgVectorRM(dspy.Retrieve):
                     sql_query,
                     (query_embedding, self.k))
                 rows = cur.fetchall()
+                columns = [desc[0] for desc in cur.description]
                 for row in rows:
-                    related_paragraphs.append(dspy.Example(long_text=row[0], document_id=row[1]))
+                    data = dict(zip(columns, row))
+                    related_paragraphs.append(dspy.Example(**data))
         # Return Prediction
         return related_paragraphs

@@ -15,3 +15,5 @@ jobs:
 
       - name: Pre-build image and run make ci-build in dev container
         uses: devcontainers/ci@v0.3
+        with:
+          runCmd: devcontainer build --workspace-folder ./

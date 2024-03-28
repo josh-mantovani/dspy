@@ -13,7 +13,5 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3 # Check out the repository so your job can access it
 
-      - name: Run commands in Docker container
-        run: |
-          docker pull mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm # Pull the Docker image from Docker Hub
-          docker run --workdir /workspace -v "${{ github.workspace }}:/workspace" mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm /bin/sh -c "yarn; yarn compile; devcontainer up"
+      - name: Pre-build image and run make ci-build in dev container
+        uses: devcontainers/ci@v0.3

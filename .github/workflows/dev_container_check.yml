@@ -1,0 +1,19 @@
+name: Dev Container Check
+on:
+  push:
+    paths:
+      - ".devcontainer/**"
+  pull_request:
+    paths:
+      - ".devcontainer/**"
+jobs:
+  run_dev_container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # Check out the repository so your job can access it
+
+      - name: Run commands in Docker container
+        run: |
+          docker pull mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm # Pull the Docker image from Docker Hub
+          docker run --workdir /workspace -v "${{ github.workspace }}:/workspace" mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm /bin/sh -c "yarn; yarn compile; devcontainer up"
